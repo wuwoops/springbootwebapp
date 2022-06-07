@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>職員列表</title>
+    <!-- CSS only -->
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.css" />
+</head>
+<body>
+<div class="container table-bordered " style="background:whitesmoke">
+    <h1 class="text-center" style="background: cornflowerblue ;margin: 0">職員列表</h1>
+    <a th:href="@{/EmployeeForm}" class="btn btn-outline-primary btn-lg " style="margin: 10px">新增職員</a>
+    <table class="table table-bordered table-striped text-center" id="employeeTable">
+        <thead>
+        <tr>
+            <th>名字</th>
+            <th>信箱</th>
+            <th>部門</th>
+            <th style="width: 300px">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee: ${employees}">
+            <td th:text="${employee.name}"></td>
+            <td  th:text="${employee.email}"></td>
+            <td  th:text="${employee.department}"></td>
+            <td>
+                <a th:href="@{'/showUpdateForm/'+${employee.id}}" class="btn btn-info" style="margin-left: 5px;margin-right: 20px">更新資料</a>
+                <a th:href="@{'/deleteEmployee/'+${employee.id}}" class="btn btn-danger" onclick="return del()">刪除本員工資料</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#employeeTable").DataTable({
+            'aoColumnDefs': [{
+                'bSortable': false,
+                'aTargets': [-1] /* 1st one, start by the right */
+            }]
+        });
+    })
+    function del() {
+        let msg = "您真的確定要刪除嗎？\n\n請確認！";
+        if (confirm(msg)==true){
+            return true;
+        }else{
+            return false;
+        }
+    }
+</script>
+</body>
+</html>
